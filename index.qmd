@@ -1,0 +1,100 @@
+---
+title: "Tarea3"
+author: Christian Cisneros C32240, Brian Martinez C34606
+format: html
+toc: true
+lang: es 
+theme: lux 
+---
+
+# Introduccion 
+A continuation en este trabajo se podra apreciar diferentes graficois que demuestren 
+diferentes datos, ya sean en una escala de mayor a menor, o de una manera reducida
+diferentes situaciones en las que se ve involucrada la tabla de "datos_clinicos", en este
+caso que se ven enfocados en la diabetes.
+
+
+## carga de paquetes 
+```{r}
+#| label: carga-paquete
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(knitr)
+```
+
+## carga de datos
+```{r}
+#| label: Carga-datos
+#| message: false
+#| warning: false
+
+ datos_clinicos <- read_csv(
+  "heart_failure_clinical_records_dataset.csv",
+  locale = locale(encoding = "WINDOWS-1252")
+)
+```
+
+# Bloque 1
+
+```{r}
+#| label: block-01
+#| message: false
+#| warning: false
+
+
+datos_clinicos |>
+  select(sex,age,diabetes,high_blood_pressure, serum_creatinine) |>
+  filter(sex == "0", age > 75) |>
+  arrange(desc(age)) |>
+  kable()
+```
+
+# Bloque 2
+
+```{r}
+#| label: block-02
+#| message: false
+#| warning: false
+
+
+datos_clinicos |>
+  select(sex,age,diabetes,smoking,ejection_fraction) |>
+  filter(sex == "1") |>
+  arrange(age) |>
+  signif(digits = 2) |>
+  kable()
+```
+
+# Bloque 3
+
+```{r}
+#| label: block-03
+#| message: false
+#| warning: false
+
+
+datos_clinicos |> group_by(diabetes) |>
+  summarise(ejection_fraction_mean = mean(ejection_fraction, na.rm = TRUE)) |>
+    kable()
+```
+
+# Bloque 4
+
+```{r}
+#| label: block-04
+#| message: false
+#| warning: false
+
+datos_clinicos |>  filter(sex == 1, DEATH_EVENT == 1 ) |>
+  summarise(EdadMenor = min(age, na.rm = TRUE)) |>
+kable()
+```
+
+
+
+
+
+
+
